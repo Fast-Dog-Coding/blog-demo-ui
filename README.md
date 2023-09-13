@@ -10,6 +10,8 @@ This application was developed by [Grant Lindsay](https://linkedin.com/in/grant-
 
 ## Is there a live version that I can see?
 
+Coming soon.
+
 ## Can I copy this application for myself?
 
 If you comply with the terms in the LICENSE, of course you may.

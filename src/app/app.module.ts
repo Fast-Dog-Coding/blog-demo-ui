@@ -1,31 +1,35 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { PostListComponent } from './post-list/post-list.component';
-import { PostComponent } from './post/post.component';
-import { HeaderComponent } from './header/header.component';
+import { AppRoutingModule } from './app-routing.module';
+import { FeaturesComponent } from './home/features/features.component';
 import { FooterComponent } from './footer/footer.component';
-import { FeaturesComponent } from './features/features.component';
-import { SideBarComponent } from './side-bar/side-bar.component';
+import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PostComponent } from './post/post.component';
+import { PostListComponent } from './home/post-list/post-list.component';
+import { SideBarComponent } from './home/side-bar/side-bar.component';
+import { PostsFilteredComponent } from './posts-filtered/posts-filtered.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PostListComponent,
-    PostComponent,
-    HeaderComponent,
-    FooterComponent,
     FeaturesComponent,
+    FooterComponent,
+    HeaderComponent,
+    HomeComponent,
+    PostComponent,
+    PostListComponent,
     SideBarComponent,
-    HomeComponent
+    PostsFilteredComponent
   ],
   imports: [
-    BrowserModule,
     AppRoutingModule,
+    BrowserModule,
+    HttpClientModule,
     NgbModule
   ],
   providers: [],
