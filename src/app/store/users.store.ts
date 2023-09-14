@@ -2,7 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { User } from '../models/user';
 import { BehaviorSubject, Observable, shareReplay, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { environment } from '@environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class UsersStore implements OnInit {
