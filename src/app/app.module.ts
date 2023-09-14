@@ -13,6 +13,8 @@ import { PostComponent } from './post/post.component';
 import { PostListComponent } from './home/post-list/post-list.component';
 import { SideBarComponent } from './home/side-bar/side-bar.component';
 import { PostsFilteredComponent } from './posts-filtered/posts-filtered.component';
+import { ImagePathPipe } from './shared/pipes/image-path.pipe';
+import { SafeHtmlPipe } from './shared/pipes/safe-html.pipe';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { PostsFilteredComponent } from './posts-filtered/posts-filtered.componen
     PostComponent,
     PostListComponent,
     SideBarComponent,
-    PostsFilteredComponent
+    PostsFilteredComponent,
+    ImagePathPipe,
+    SafeHtmlPipe
   ],
   imports: [
     AppRoutingModule,
