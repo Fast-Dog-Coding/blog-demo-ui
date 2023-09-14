@@ -2,25 +2,24 @@
   <div class="col">
     <article class="blog-post" *ngIf="(data$ | async) as data; else missing">
       <img
-        [src]="imagePath(data.post.imageUrl)"
-        class="img-fluid"
-        alt="article image"
+        [src]="data.post.imageUrl | imagePath"
+        class="img-fluid rounded"
+        alt="{{ data.post.imageUrl }}"
         *ngIf="data.post.imageUrl">
-      <!-- category bubbles -->
       <span
         class="badge rounded-pill text-bg-secondary my-2 me-2"
         *ngFor="let category of data.post.categories">
         {{ category }}
       </span>
-      <h2 class="display-5 link-body-emphasis mb-1">{{ data.post.title }}</h2>
+      <h2 class="display-5 link-body-emphasis mt-4 mb-1">{{ data.post.title }}</h2>
       <p class="blog-post-meta">{{ data.post.publishedDate | date:'medium' }} by <a [href]="data.author.profileUrl">{{ data.author.firstName }} {{ data.author.lastName }}</a></p>
       <p class="lead">{{ data.post.lede }}</p>
       <hr>
-      <div [innerHTML]="safePostBodyHtml(data.post.bodyHtml)"></div>
+      <div [innerHTML]="data.post.bodyHtml | safeHtml"></div>
       <p
-        class="text-body-tertiary"
+        class="text-body-tertiary text-end"
         *ngIf="data.post.imageUrlCredit">
-        <small>image credit: <span [innerHTML]="safePostBodyHtml(data.post.imageUrlCredit)"></span></small>
+        <small>image credit: <span [innerHTML]="data.post.imageUrlCredit | safeHtml"></span></small>
       </p>
     </article>
 

@@ -4,9 +4,7 @@ import { PostsStore } from '../store/posts.store';
 import { UsersStore } from '../store/users.store';
 import { map, Observable, switchMap } from 'rxjs';
 import { Post } from '../models/post';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { User } from '../models/user';
-import { environment } from '../../environments/environment';
 
 interface PostData {
   post: Post;
@@ -25,8 +23,7 @@ export class PostComponent implements OnInit {
   constructor(
     private router: ActivatedRoute,
     private postsStore: PostsStore,
-    private usersStore: UsersStore,
-    private sanitizer: DomSanitizer
+    private usersStore: UsersStore
   ) {
   }
 
@@ -40,13 +37,5 @@ export class PostComponent implements OnInit {
             map(author => ({ post, author }))
           ))
       );
-  }
-
-  safePostBodyHtml(html: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(html);
-  }
-
-  imagePath(path: string): string {
-    return `${environment.apiUrl}${path}`
   }
 }
