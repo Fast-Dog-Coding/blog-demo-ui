@@ -1,15 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { filter, map, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { PostsStore } from '../store/posts.store';
 import { UsersStore } from '../store/users.store';
-import { map, Observable, switchMap } from 'rxjs';
-import { Post } from '../models/post';
-import { User } from '../models/user';
-
-interface PostData {
-  post: Post;
-  author: User;
-}
+import { PostWithAuthor } from '../models/post-with-author';
 
 @Component({
   selector: 'app-post',
@@ -18,7 +13,7 @@ interface PostData {
 })
 export class PostComponent implements OnInit {
 
-  data$: Observable<PostData> | undefined;
+  data$: Observable<PostWithAuthor | null> | undefined;
 
   constructor(
     private router: ActivatedRoute,
@@ -32,10 +27,14 @@ export class PostComponent implements OnInit {
 
     this.data$ = this.postsStore.getPostById(postId)
       .pipe(
-        switchMap(post => this.usersStore.getUserById(post.authorId)
-          .pipe(
-            map(author => ({ post, author }))
-          ))
+        filter(post => !!post),
+        switchMap(post => {
+            return this.usersStore.getUserById(post.authorId)
+              .pipe(
+                map(author => ({ post, author })),
+              );
+          }
+        )
       );
   }
 }

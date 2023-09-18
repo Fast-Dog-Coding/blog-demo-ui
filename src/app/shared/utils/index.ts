@@ -1,4 +1,4 @@
-import { forkJoin, OperatorFunction } from 'rxjs';
+import { forkJoin, Observable, of, OperatorFunction } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Post } from '../../models/post';
 import { PostWithAuthor } from '../../models/post-with-author';
@@ -34,4 +34,16 @@ export function processPosts(usersStore: UsersStore, numberToReturn: number = 1)
         )
       )
     );
+}
+
+/**
+ * Handles an error and returns an Observable with a default value.
+ *
+ * @param {any} error - The error object to be logged.
+ * @param {T} [defaultValue=null] - The default value returned in the Observable.
+ * @returns {Observable<T>} An Observable with the default value.
+ */
+export function handleError<T>(error: any, defaultValue: T = null as T): Observable<T> {
+  console.error(error);
+  return of(defaultValue);
 }

@@ -1,8 +1,9 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Post } from '../models/post';
-import { BehaviorSubject, Observable, shareReplay, tap } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, shareReplay, tap, throwError } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@environments/environment';
+import { handleError } from '../shared/utils';
 
 @Injectable({ providedIn: 'root' })
 export class PostsStore implements OnInit {
@@ -21,6 +22,7 @@ export class PostsStore implements OnInit {
   loadAllPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(`${environment.apiUrl}/posts`)
       .pipe(
+        catchError(error => handleError(error, [])),
         tap(posts => this.postsSubject.next(posts)),
         shareReplay()
       );
@@ -32,6 +34,7 @@ export class PostsStore implements OnInit {
     };
     return this.http.get<Post[]>(`${environment.apiUrl}/posts`, options)
       .pipe(
+        catchError(error => handleError(error, [])),
         tap(posts => this.postsSubject.next(posts)),
         shareReplay()
       );
@@ -40,6 +43,7 @@ export class PostsStore implements OnInit {
   getPostById(postId: number): Observable<Post> {
     return this.http.get<Post>(`${environment.apiUrl}/posts/${postId}`)
       .pipe(
+        catchError(error => handleError<Post>(error)),
         shareReplay()
       );
   }
@@ -47,6 +51,7 @@ export class PostsStore implements OnInit {
   getPostCategories(): Observable<string[]> {
     return this.http.get<string[]>(`${environment.apiUrl}/posts/categories`)
       .pipe(
+        catchError(error => handleError(error, [])),
         shareReplay()
       );
   }
