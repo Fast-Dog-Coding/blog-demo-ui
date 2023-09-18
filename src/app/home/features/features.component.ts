@@ -2,13 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { forkJoin, map, Observable, of, switchMap } from 'rxjs';
 import { PostsStore } from '../../store/posts.store';
 import { UsersStore } from '../../store/users.store';
-import { Post, PromotionLevels } from '../../models/post';
-import { User } from '../../models/user';
-
-interface PostData {
-  post: Post;
-  author: User;
-}
+import { PromotionLevels } from '../../models/post';
+import { PostWithAuthor } from '../../models/post-with-author';
+import { processPosts } from '../../shared/utils/post-utils';
 
 @Component({
   selector: 'app-features',
@@ -17,8 +13,8 @@ interface PostData {
 })
 export class FeaturesComponent implements OnInit {
 
-  heroData$: Observable<PostData> = of({} as PostData);
-  featureData$: Observable<PostData[]> = of([] as PostData[]);
+  heroData$: Observable<PostWithAuthor> = of({} as PostWithAuthor);
+  featureData$: Observable<PostWithAuthor[]> = of([] as PostWithAuthor[]);
 
   constructor(
     private postsStore: PostsStore,
@@ -27,41 +23,15 @@ export class FeaturesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Get 1 hero post (with author info) to show in the feature section of home page
     this.heroData$ = this.postsStore.loadFilteredPosts({ promotion: PromotionLevels.Hero })
       .pipe(
-        // Sort posts, newest on top
-        map(posts => posts
-          .sort((a, b) => b.publishedDate.localeCompare(a.publishedDate))
-        ),
-        // Get the top one (most recent)
-        map(sortedPosts => sortedPosts[0]),
-        // Get the author
-        switchMap(post => this.usersStore.getUserById(post.authorId)
-          .pipe(
-            map(author => ({ post, author }))
-          )
-        )
-      );
+        processPosts(this.usersStore),
+        map(processedPosts => processedPosts[0])
+        );
 
+    // Get 2 feature posts (with author info) to show in the feature section of home page
     this.featureData$ = this.postsStore.loadFilteredPosts({ promotion: PromotionLevels.Feature })
-      .pipe(
-        // Sort posts, newest on top
-        map(posts => posts
-          .sort((a, b) => b.publishedDate.localeCompare(a.publishedDate))
-        ),
-        // Get the top 2 (most recent)
-        map(sortedPosts => sortedPosts.slice(0, 2)),
-        // For each, get the author
-        switchMap(posts =>
-          forkJoin(
-            posts.map(post =>
-              this.usersStore.getUserById(post.authorId)
-                .pipe(
-                  map(author => ({ post, author })) // get the author for each post
-                )
-            )
-          )
-        )
-      );
+      .pipe(processPosts(this.usersStore, 2));
   }
 }

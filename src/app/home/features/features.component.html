@@ -4,7 +4,7 @@
     <div class="card-img-overlay bg-linear-gradient text-overlay">
       <div class="col-sm-8 col-lg-6">
         <h1 class="display-4 fst-italic">{{ heroData.post.title }}</h1>
-        <p class="card-text lead my-3 d-none d-sm-block">{{ heroData.post.lede }}</p>
+        <p class="card-text lead my-3 d-none d-sm-block"><strong>{{ heroData.post.lede }}</strong></p>
         <a routerLink="/posts/{{ heroData.post.id }}"
            class="icon-link icon-link-hover stretched-link align-items-baseline text-primary">
           Continue reading <i class="bi bi-chevron-right"></i>
@@ -30,10 +30,10 @@
             Continue reading <i class="bi bi-chevron-right"></i>
           </a>
           <p class="card-text mt-3"><small
-            class="text-body-secondary">{{ data.post.publishedDate | date:'MMM d' }}</small></p>
+            class="text-body-secondary">{{ data.post.publishedDate | date:'longDate' }}</small></p>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-6 order-first order-md-last">
         <img [src]="data.post.imageUrl | imagePath" class="card-img" alt="{{ data.post.imageUrl }}">
       </div>
     </div>
