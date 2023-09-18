@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { forkJoin, map, Observable, of, switchMap } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { PostsStore } from '../../store/posts.store';
 import { UsersStore } from '../../store/users.store';
 import { PromotionLevels } from '../../models/post';
 import { PostWithAuthor } from '../../models/post-with-author';
-import { processPosts } from '../../shared/utils/post-utils';
+import { processPosts } from '../../shared/utils';
 
 @Component({
   selector: 'app-features',
