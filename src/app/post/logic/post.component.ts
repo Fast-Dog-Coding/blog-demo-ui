@@ -14,7 +14,7 @@ import { HttpRequestState } from '../../store/http-request-state';
 })
 export class PostComponent implements OnInit {
 
-  data$: Observable<HttpRequestState<PostWithAuthor>> = of({ isLoading: true });
+  postRequestData$: Observable<HttpRequestState<PostWithAuthor>> = of({ isLoading: true });
 
   constructor(
     private router: ActivatedRoute,
@@ -26,9 +26,7 @@ export class PostComponent implements OnInit {
   ngOnInit(): void {
     const postId = parseInt(<string>this.router.snapshot.paramMap.get('postId'), 10);
 
-    this.data$ = this.postsStore.getPostById(postId)
-      .pipe(
-        processPost(this.usersStore)
-      );
+    this.postRequestData$ = this.postsStore.getPostById(postId)
+      .pipe(processPost(this.usersStore));
   }
 }

@@ -8,6 +8,6 @@ import { PostWithAuthor } from '../../models/post-with-author';
 })
 export class PostDisplayComponent {
 
-  @Input() data: PostWithAuthor | undefined
+  @Input() postData: PostWithAuthor | undefined
 
 }

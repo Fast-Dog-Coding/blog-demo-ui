@@ -1,5 +1,5 @@
 <div class="row g-0 mb-2">
-  <div class="card rounded mb-2" *ngIf="(heroData$ | async)?.value as heroData">
+  <div class="card rounded mb-2" *ngIf="(heroPostRequestData$ | async)?.value as heroData">
     <img [src]="heroData.post.imageUrl | imagePath" class="card-img" alt="{{ heroData.post.imageUrl }}">
     <div class="card-img-overlay bg-linear-gradient text-overlay">
       <div class="col-sm-8 col-lg-6">
@@ -15,26 +15,26 @@
     </div>
   </div>
 
-  <div class="card rounded mb-2 col-lg-6" *ngFor="let data of (featureData$ | async)?.value">
+  <div class="card rounded mb-2 col-lg-6" *ngFor="let featuresData of (featurePostsRequestData$ | async)?.value">
     <div class="row g-0">
       <div class="col-md-6">
         <div class="card-body">
           <span
             class="badge rounded-pill text-bg-secondary mb-2 me-2"
-            *ngFor="let category of data.post.categories">
+            *ngFor="let category of featuresData.post.categories">
             {{ category }}
           </span>
-          <h3 class="fst-italic">{{ data.post.title }}</h3>
-          <a routerLink="/posts/{{ data.post.id }}"
+          <h3 class="fst-italic">{{ featuresData.post.title }}</h3>
+          <a routerLink="/posts/{{ featuresData.post.id }}"
              class="icon-link icon-link-hover stretched-link align-items-baseline text-primary">
             Continue reading <i class="bi bi-chevron-right"></i>
           </a>
           <p class="card-text mt-3"><small
-            class="text-body-secondary">{{ data.post.publishedDate | date:'longDate' }}</small></p>
+            class="text-body-secondary">{{ featuresData.post.publishedDate | date:'longDate' }}</small></p>
         </div>
       </div>
       <div class="col-md-6 order-first order-md-last">
-        <img [src]="data.post.imageUrl | imagePath" class="card-img" alt="{{ data.post.imageUrl }}">
+        <img [src]="featuresData.post.imageUrl | imagePath" class="card-img" alt="{{ featuresData.post.imageUrl }}">
       </div>
     </div>
   </div>

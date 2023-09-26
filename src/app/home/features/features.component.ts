@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { map, Observable, of } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import { PostsStore } from '../../store/posts.store';
 import { UsersStore } from '../../store/users.store';
 import { PromotionLevels } from '../../models/post';
 import { PostWithAuthor } from '../../models/post-with-author';
-import { processPosts } from '../../shared/utils';
+import { processPost, processPosts } from '../../shared/utils';
 import { HttpRequestState } from '../../store/http-request-state';
 
 @Component({
@@ -14,8 +14,8 @@ import { HttpRequestState } from '../../store/http-request-state';
 })
 export class FeaturesComponent implements OnInit {
 
-  heroData$: Observable<HttpRequestState<PostWithAuthor>> = of({ isLoading: true });
-  featureData$: Observable<HttpRequestState<PostWithAuthor[]>> = of({ isLoading: true });
+  heroPostRequestData$: Observable<HttpRequestState<PostWithAuthor>> = of({ isLoading: true });
+  featurePostsRequestData$: Observable<HttpRequestState<PostWithAuthor[]>> = of({ isLoading: true });
 
   constructor(
     private postsStore: PostsStore,
@@ -25,17 +25,16 @@ export class FeaturesComponent implements OnInit {
 
   ngOnInit(): void {
     // Get 1 hero post (with author info) to show in the feature section of home page
-    this.heroData$ = this.postsStore.loadFilteredPosts({ promotion: PromotionLevels.Hero })
+    this.heroPostRequestData$ = this.postsStore.loadFilteredPosts({ promotion: PromotionLevels.Hero })
       .pipe(
-        processPosts(this.usersStore),
-        map(postsWithAuthors => {
-          const postWithAuthors: HttpRequestState<PostWithAuthor> = { ...postsWithAuthors, value: postsWithAuthors.value ? postsWithAuthors.value[0] : undefined};
-          return postWithAuthors;
-        })
+        switchMap(postsRequest => {
+          return of({ ...postsRequest, value: postsRequest.value?.pop() });
+        }),
+        processPost(this.usersStore)
         );
 
     // Get 2 feature posts (with author info) to show in the feature section of home page
-    this.featureData$ = this.postsStore.loadFilteredPosts({ promotion: PromotionLevels.Feature })
+    this.featurePostsRequestData$ = this.postsStore.loadFilteredPosts({ promotion: PromotionLevels.Feature })
       .pipe(processPosts(this.usersStore, 2));
   }
 }

@@ -14,7 +14,7 @@ import { HttpRequestState } from '../../store/http-request-state';
 })
 export class PostListComponent implements OnInit {
 
-  postData$: Observable<HttpRequestState<PostWithAuthor[]>> = of({ isLoading: true });
+  postRequestData$: Observable<HttpRequestState<PostWithAuthor[]>> = of({ isLoading: true });
 
   constructor(
     private postsStore: PostsStore,
@@ -24,7 +24,7 @@ export class PostListComponent implements OnInit {
 
   ngOnInit(): void {
     // Get 3 posts (with author info) to show on main section of home page
-    this.postData$ = this.postsStore.loadFilteredPosts({ promotion: PromotionLevels.Main })
+    this.postRequestData$ = this.postsStore.loadFilteredPosts({ promotion: PromotionLevels.Main })
       .pipe(processPosts(this.usersStore, 3));
   }
 

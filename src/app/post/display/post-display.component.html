@@ -1,27 +1,27 @@
-<div *ngIf="data">
+<div *ngIf="postData">
   <article class="blog-post">
     <div class="card rounded border-0 mb-2">
       <div class="row g-0">
         <div class="col-12 mb-3">
             <span
               class="badge rounded-pill text-bg-secondary me-2"
-              *ngFor="let category of data.post.categories">
+              *ngFor="let category of postData.post.categories">
             {{ category }}
           </span>
         </div>
         <div class="card-title">
-          <h1 class="fst-italic mb-0">{{ data.post.title }}</h1>
+          <h1 class="fst-italic mb-0">{{ postData.post.title }}</h1>
         </div>
         <div class="col-md-6 pt-md-3 order-md-last">
-          <img [src]="data.post.imageUrl | imagePath" class="card-img" alt="{{ data.post.imageUrl }}">
+          <img [src]="postData.post.imageUrl | imagePath" class="card-img" alt="{{ postData.post.imageUrl }}">
         </div>
         <div class="col-md-6">
           <div class="card-body">
-            <p class="lead">{{ data.post.lede }}</p>
+            <p class="lead">{{ postData.post.lede }}</p>
             <p class="card-text mt-3"><small
-              class="text-body-secondary">published on {{ data.post.publishedDate | date:'longDate' }}
-              at {{ data.post.publishedDate | date:'shortTime' }}
-              by <a [href]="data.author.profileUrl">{{ data.author.firstName }} {{ data.author.lastName }}</a></small>
+              class="text-body-secondary">published on {{ postData.post.publishedDate | date:'longDate' }}
+              at {{ postData.post.publishedDate | date:'shortTime' }}
+              by <a [href]="postData.author.profileUrl">{{ postData.author.firstName }} {{ postData.author.lastName }}</a></small>
             </p>
           </div>
         </div>
@@ -29,11 +29,11 @@
     </div>
 
     <hr>
-    <div [innerHTML]="data.post.bodyHtml | safeHtml"></div>
+    <div [innerHTML]="postData.post.bodyHtml | safeHtml"></div>
     <p
       class="text-body-tertiary text-end"
-      *ngIf="data.post.imageUrlCredit">
-      <small>image credit: <span [innerHTML]="data.post.imageUrlCredit | safeHtml"></span></small>
+      *ngIf="postData.post.imageUrlCredit">
+      <small>image credit: <span [innerHTML]="postData.post.imageUrlCredit | safeHtml"></span></small>
     </p>
   </article>
 </div>
