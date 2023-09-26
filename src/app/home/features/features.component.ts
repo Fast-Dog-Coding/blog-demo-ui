@@ -31,7 +31,7 @@ export class FeaturesComponent implements OnInit {
           return of({ ...postsRequest, value: postsRequest.value?.pop() });
         }),
         processPost(this.usersStore)
-        );
+      );
 
     // Get 2 feature posts (with author info) to show in the feature section of home page
     this.featurePostsRequestData$ = this.postsStore.loadFilteredPosts({ promotion: PromotionLevels.Feature })

@@ -18,6 +18,9 @@ import { PostsFilteredComponent } from './posts-filtered/posts-filtered.componen
 import { ImagePathPipe } from './shared/pipes/image-path.pipe';
 import { SafeHtmlPipe } from './shared/pipes/safe-html.pipe';
 import { PostLoadingComponent } from './shared/display/post-loading/post-loading.component';
+import { PostHeroDisplayComponent } from './home/display/post-hero-display/post-hero-display.component';
+import { PostFeatureDisplayComponent } from './home/display/post-feature-display/post-feature-display.component';
+import { PostSidebarDisplayComponent } from './home/display/post-sidebar-display/post-sidebar-display.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,10 @@ import { PostLoadingComponent } from './shared/display/post-loading/post-loading
     PostsFilteredComponent,
     ImagePathPipe,
     SafeHtmlPipe,
-    PostLoadingComponent
+    PostLoadingComponent,
+    PostHeroDisplayComponent,
+    PostFeatureDisplayComponent,
+    PostSidebarDisplayComponent
   ],
   imports: [
     AppRoutingModule,
