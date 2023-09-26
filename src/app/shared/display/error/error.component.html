@@ -1,0 +1,31 @@
+<article class="blog-post">
+  <div class="card rounded border-0 mb-2">
+    <div class="row g-0">
+      <div class="col-12 mb-3">
+        <span class="badge rounded-pill text-bg-secondary me-2">Shoot</span>
+      </div>
+      <div class="card-title">
+        <h1 class="fst-italic mb-0">{{ title }}</h1>
+      </div>
+      <div class="col-md-6 pt-md-3 order-md-last">
+        <img [src]="'/images/sad_robot.png' | imagePath" class="card-img" alt="sad robot looking for a document">
+      </div>
+      <div class="col-md-6">
+        <div class="card-body">
+          <p class="lead">{{ message }} Please
+            <a routerLink="/"
+               title="link to home page">return to the home page</a>
+            and try selecting another article.</p>
+
+          <div class="visually-hidden" *ngIf="error">
+            <pre>{{ errorMessage }}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="text-body-tertiary text-end">
+    <small>image credit: <span><a href="https://labs.openai.com/">DALL-E</a></span></small>
+  </p>
+</article>

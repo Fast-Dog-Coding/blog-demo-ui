@@ -1,21 +1,13 @@
 <ng-container *ngIf="postsData$ | async as data">
-  <div *ngIf="data.isLoading">LOADING</div>
-  <div *ngIf="data.error"><pre>{{ data.error }}</pre></div>
-  <div *ngIf="data.value"><pre>{{ data.value }}</pre></div>
-</ng-container>
-
-<!--
-<ng-container *ngIf="(loading$ | async); else loaded">
-  <div class="d-flex justify-content-center align-items-center" style="height: 75vh;">
-    <div class="spinner-border " role="status">
-      <span class="visually-hidden">Loading...</span>
+  <div *ngIf="data.isLoading">
+    <div class="d-flex justify-content-center align-items-center" style="height: 75vh;">
+      <div class="spinner-border " role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
     </div>
   </div>
-</ng-container>
 
-<ng-template #loaded>
-
-  <ng-container *ngIf="(postsData$ | async) as postsData; else noData">
+  <div *ngIf="data.value as postsData">
     <article class="blog-post" *ngFor="let data of postsData">
       <div class="card rounded border-0 mb-2">
         <div class="row g-0">
@@ -53,9 +45,9 @@
       </p>
       <hr>
     </article>
-  </ng-container>
+  </div>
 
-  <ng-template #noData>
+  <div *ngIf="data.error">
     <article class="blog-post">
       <div class="card rounded border-0 mb-2">
         <div class="row g-0">
@@ -83,6 +75,5 @@
         <small>image credit: <span><a href="https://labs.openai.com/">DALL-E</a></span></small>
       </p>
     </article>
-  </ng-template>
-</ng-template>
--->
+  </div>
+</ng-container>

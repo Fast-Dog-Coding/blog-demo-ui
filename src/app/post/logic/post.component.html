@@ -1,0 +1,16 @@
+<ng-container *ngIf="data$ | async as data">
+  <div *ngIf="data.isLoading">
+    <app-post-loading></app-post-loading>
+  </div>
+
+  <div *ngIf="data.value as value">
+    <app-post-display [data]="value"></app-post-display>
+  </div>
+
+  <div *ngIf="data.error as error">
+    <app-error
+      [error]="error"
+      [message]="'We lost that article somewhere along the way.'">
+    </app-error>
+  </div>
+</ng-container>

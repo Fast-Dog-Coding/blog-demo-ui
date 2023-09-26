@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { PostsStore } from '../store/posts.store';
-import { UsersStore } from '../store/users.store';
-import { PostWithAuthor } from '../models/post-with-author';
-import { processPost } from '../shared/utils';
-import { HttpRequestState } from '../store/http-request-state';
+import { PostsStore } from '../../store/posts.store';
+import { UsersStore } from '../../store/users.store';
+import { PostWithAuthor } from '../../models/post-with-author';
+import { processPost } from '../../shared/utils';
+import { HttpRequestState } from '../../store/http-request-state';
 
 @Component({
   selector: 'app-post',
@@ -31,6 +31,4 @@ export class PostComponent implements OnInit {
         processPost(this.usersStore)
       );
   }
-
-  protected readonly JSON = JSON;
 }
