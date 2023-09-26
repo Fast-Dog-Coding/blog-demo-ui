@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { filter, map, switchMap } from 'rxjs/operators';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { PostsStore } from '../store/posts.store';
 import { UsersStore } from '../store/users.store';
 import { PostWithAuthor } from '../models/post-with-author';
+import { processPost } from '../shared/utils';
+import { HttpRequestState } from '../store/http-request-state';
 
 @Component({
   selector: 'app-post',
@@ -13,10 +14,7 @@ import { PostWithAuthor } from '../models/post-with-author';
 })
 export class PostComponent implements OnInit {
 
-  private loadingSub = new BehaviorSubject<boolean>(true);
-
-  data$: Observable<PostWithAuthor | null> | undefined;
-  loading$: Observable<boolean> = this.loadingSub.asObservable();
+  data$: Observable<HttpRequestState<PostWithAuthor>> = of({ isLoading: true });
 
   constructor(
     private router: ActivatedRoute,
@@ -30,18 +28,9 @@ export class PostComponent implements OnInit {
 
     this.data$ = this.postsStore.getPostById(postId)
       .pipe(
-        tap(_ => this.loadingSub.next(false)),
-        filter(post => !!post),
-        switchMap(post => {
-            return this.usersStore.getUserById(post.authorId)
-              .pipe(
-                filter(user => !!user),
-                map(author => ({ post, author })),
-              );
-          }
-        )
+        processPost(this.usersStore)
       );
-
-    this.data$.subscribe();
   }
+
+  protected readonly JSON = JSON;
 }

@@ -1,47 +1,135 @@
-import { forkJoin, Observable, of, OperatorFunction } from 'rxjs';
+import { catchError, forkJoin, Observable, of, OperatorFunction } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Post } from '../../models/post';
+import { User } from '../../models/user';
 import { PostWithAuthor } from '../../models/post-with-author';
 import { UsersStore } from '../../store/users.store';
+import { HttpRequestState } from '../../store/http-request-state';
 
 /**
- * Processes an array of posts and returns an array of PostWithAuthor objects.
+ * Combines an array of posts with an array of user results to create an array of posts with their respective authors.
  *
- * @param {UsersStore} usersStore - The UsersStore object used to get user information.
- * @param {number} [numberToReturn=1] - The number of posts to return. Default is 1.
- * @returns {OperatorFunction<Post[], PostWithAuthor[]>} - The RxJS operator function that transforms the input Observable of posts into an Observable of PostWithAuthor objects.
+ * @param {Post[]} posts - An array of posts.
+ * @param {HttpRequestState<User>[]} userResults - An array of user results.
+ * @returns {PostWithAuthor[]} - An array of posts with their respective authors.
  */
-export function processPosts(usersStore: UsersStore, numberToReturn: number = 1): OperatorFunction<Post[], PostWithAuthor[]> {
-  return posts$ => posts$
+function combinePostsAndAuthors(posts: Post[], userResults: HttpRequestState<User>[]): PostWithAuthor[] {
+  return posts.map((post, index) => {
+    const userResult = userResults[index];
+    const author = userResult.value as User;
+    return { post, author };
+  });
+}
+
+/**
+ * Formats the response by updating the value property of the HttpRequestState object with a new value.
+ *
+ * @param {HttpRequestState<any>} requestState - The original HttpRequestState object.
+ * @param {PostWithAuthor} [newValue] - The new value to be assigned to the value property.
+ * @return {HttpRequestState<any>} - The updated HttpRequestState object with the new value.
+ */
+function formatResponse<T, K>(requestState: HttpRequestState<T>, newValue?: K): HttpRequestState<K> {
+  return { ...requestState, value: newValue };
+}
+
+/**
+ * Retrieves the authors of the given posts from the users store.
+ *
+ * @param {UsersStore} usersStore - The store containing the user data.
+ * @param {Post[]} posts - The posts to retrieve the authors for.
+ * @return {Observable<HttpRequestState<User>[]>} - An observable that emits an array of HTTP request states for each author retrieval.
+ */
+function getAuthorsForPosts(usersStore: UsersStore, posts: Post[]): Observable<HttpRequestState<User>[]> {
+  const getUserCalls = posts.map(post => usersStore.getUserById(post.authorId));
+  return forkJoin(getUserCalls);
+}
+
+/**
+ * Returns an array of posts sorted by their published date in descending order.
+ *
+ * @param {Post[] | undefined} posts - An array of post objects.
+ * @param {number=} numberToReturn - The number of sorted posts to return. Defaults to all.
+ * @returns {Post[]} - The sorted array of posts.
+ */
+function getPostsSortedByDate(posts: Post[] | undefined, numberToReturn?: number): Post[] {
+  let sortedPosts: Post[] = [];
+
+  if (Array.isArray(posts)) {
+    sortedPosts = posts
+      .sort((a, b) => b.publishedDate.localeCompare(a.publishedDate))
+      .slice(0, numberToReturn);
+  }
+
+  return sortedPosts;
+}
+
+/**
+ * Processes the posts in the given request state, adding author information to each post.
+ *
+ * @param usersStore - The store containing the user information.
+ * @param numberToReturn - Optional. The maximum number of posts to return. If not specified, all posts will be returned.
+ * @returns An operator function that takes an `HttpRequestState<Post[]>` as input and emits an `HttpRequestState<PostWithAuthor[]>` with the processed posts.
+ */
+export function processPosts(usersStore: UsersStore, numberToReturn?: number): OperatorFunction<HttpRequestState<Post[]>, HttpRequestState<PostWithAuthor[]>> {
+  return (requestState$) => requestState$
     .pipe(
-      // Sort posts, newest on top
-      map(posts => posts
-        .sort((a, b) => b.publishedDate.localeCompare(a.publishedDate))
-      ),
-
-      // Get the most recent one(s)
-      map(sortedPosts => sortedPosts.slice(0, numberToReturn)),
-
-      // For each post, get the author
-      switchMap(posts =>
-        forkJoin(
-          posts.map(post =>
-            usersStore.getUserById(post.authorId)
-              .pipe(
-                map(author => ({ post, author }))
-              )
-          )
-        )
-      )
+      switchMap(postsRequestState => {
+        const posts = getPostsSortedByDate(postsRequestState.value, numberToReturn);
+        if (posts.length > 0) {
+          return getAuthorsForPosts(usersStore, posts)
+            .pipe(
+              map((userResults) => {
+                const postsWithAuthors = combinePostsAndAuthors(posts, userResults);
+                return { ...postsRequestState, value: postsWithAuthors };
+              })
+            );
+        }
+        return of(formatResponse<Post[], PostWithAuthor[]>(postsRequestState))
+      })
     );
 }
 
 /**
- * Handles an error and returns an Observable with a default value.
+ * Processes a post by retrieving the post author's information and updating the response value.
+ *
+ * @param {UsersStore} usersStore - The UsersStore instance used to retrieve user information.
+ * @return {OperatorFunction<HttpRequestState<Post>, HttpRequestState<PostWithAuthor>>} - The operator function that processes the post.
+ */
+export function processPost(usersStore: UsersStore): OperatorFunction<HttpRequestState<Post>, HttpRequestState<PostWithAuthor>> {
+  return requestState$ => requestState$
+    .pipe(
+      switchMap((postRequestState: HttpRequestState<Post>) => {
+        const post = postRequestState.value;
+        if (post) {
+          // We got a Post
+          return usersStore.getUserById(post.authorId)
+            .pipe(
+              switchMap((userRequestState: HttpRequestState<User>) => {
+                const author = userRequestState.value;
+                if (author) {
+                  // We got the Post author (User)
+                  const newValue: PostWithAuthor = { post, author };
+                  return of(formatResponse<User, PostWithAuthor>(userRequestState, newValue));
+                }
+                // No User value
+                return of(formatResponse<User, PostWithAuthor>(userRequestState));
+              }),
+              catchError(() => of(formatResponse<Post, PostWithAuthor>(postRequestState)))
+            );
+        }
+        // No Post value
+        return of(formatResponse<Post, PostWithAuthor>(postRequestState));
+      }),
+      catchError((error) => of(formatResponse<Post, PostWithAuthor>({ isLoading: false, error })))
+    );
+}
+
+/**
+ * Handles an error and returns an Observable with a default value: post.
  *
  * @param {any} error - The error object to be logged.
- * @param {T} [defaultValue=null] - The default value returned in the Observable.
- * @returns {Observable<T>} An Observable with the default value.
+ * @param {any} [defaultValue=null] - The default value: post returned in the Observable.
+ * @returns {Observable<any>} An Observable with the default value: post.
  */
 export function handleError<T>(error: any, defaultValue: T = null as T): Observable<T> {
   console.error(error);

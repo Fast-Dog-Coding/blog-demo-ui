@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PostsStore } from '../store/posts.store';
+import { Observable, of } from 'rxjs';
+import { HttpRequestState } from '../store/http-request-state';
 
 @Component({
   selector: 'app-header',
@@ -7,7 +9,8 @@ import { PostsStore } from '../store/posts.store';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit{
-  categories$: any;
+
+  categories$: Observable<HttpRequestState<string[]>> = of({ isLoading: true });
 
   constructor(private postsStore: PostsStore) {
   }

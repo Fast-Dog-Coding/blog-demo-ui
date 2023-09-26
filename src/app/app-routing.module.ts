@@ -11,7 +11,7 @@ const routes: Routes = [
 
   },
   {
-    path: 'posts/filtered/',
+    path: 'posts/filtered',
     component: PostsFilteredComponent
   },
   {

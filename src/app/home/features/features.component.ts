@@ -5,6 +5,7 @@ import { UsersStore } from '../../store/users.store';
 import { PromotionLevels } from '../../models/post';
 import { PostWithAuthor } from '../../models/post-with-author';
 import { processPosts } from '../../shared/utils';
+import { HttpRequestState } from '../../store/http-request-state';
 
 @Component({
   selector: 'app-features',
@@ -13,8 +14,8 @@ import { processPosts } from '../../shared/utils';
 })
 export class FeaturesComponent implements OnInit {
 
-  heroData$: Observable<PostWithAuthor> = of({} as PostWithAuthor);
-  featureData$: Observable<PostWithAuthor[]> = of([] as PostWithAuthor[]);
+  heroData$: Observable<HttpRequestState<PostWithAuthor>> = of({ isLoading: true });
+  featureData$: Observable<HttpRequestState<PostWithAuthor[]>> = of({ isLoading: true });
 
   constructor(
     private postsStore: PostsStore,
@@ -27,7 +28,10 @@ export class FeaturesComponent implements OnInit {
     this.heroData$ = this.postsStore.loadFilteredPosts({ promotion: PromotionLevels.Hero })
       .pipe(
         processPosts(this.usersStore),
-        map(processedPosts => processedPosts[0])
+        map(postsWithAuthors => {
+          const postWithAuthors: HttpRequestState<PostWithAuthor> = { ...postsWithAuthors, value: postsWithAuthors.value ? postsWithAuthors.value[0] : undefined};
+          return postWithAuthors;
+        })
         );
 
     // Get 2 feature posts (with author info) to show in the feature section of home page

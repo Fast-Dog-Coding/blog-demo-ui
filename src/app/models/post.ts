@@ -1,16 +1,3 @@
-export interface Post {
-  id: number;
-  categories: Categories[],
-  promotion: PromotionLevels,
-  title: string;
-  lede: string;
-  imageUrl: string;
-  imageUrlCredit: string;
-  bodyHtml: string;
-  authorId: number;
-  publishedDate: string;
-}
-
 export enum Categories {
   NodeJs = 'Node.js',
   Angular = 'Angular',
@@ -29,4 +16,17 @@ export enum PromotionLevels {
   Main = 'main',
   Side_Bar = 'side bar',
   None = 'none'
+}
+
+export interface Post {
+  id: number;
+  categories: Categories[],
+  promotion: PromotionLevels,
+  title: string;
+  lede: string;
+  imageUrl: string;
+  imageUrlCredit: string;
+  bodyHtml: string;
+  authorId: number;
+  publishedDate: string;
 }

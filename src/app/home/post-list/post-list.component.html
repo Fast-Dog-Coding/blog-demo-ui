@@ -2,7 +2,7 @@
   From the Data Stream
 </h3>
 
-<article class="blog-post" *ngFor="let data of (postData$ | async)">
+<article class="blog-post" *ngFor="let data of (postData$ | async)?.value">
 
   <div class="row g-0">
     <div class="col-lg-6">

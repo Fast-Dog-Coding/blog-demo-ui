@@ -5,6 +5,7 @@ import { PostsStore } from '../../store/posts.store';
 import { UsersStore } from '../../store/users.store';
 import { PromotionLevels } from '../../models/post';
 import { processPosts } from '../../shared/utils';
+import { HttpRequestState } from '../../store/http-request-state';
 
 @Component({
   selector: 'app-post-list',
@@ -13,7 +14,7 @@ import { processPosts } from '../../shared/utils';
 })
 export class PostListComponent implements OnInit {
 
-  postData$: Observable<PostWithAuthor[]> = of([] as PostWithAuthor[]);
+  postData$: Observable<HttpRequestState<PostWithAuthor[]>> = of({ isLoading: true });
 
   constructor(
     private postsStore: PostsStore,

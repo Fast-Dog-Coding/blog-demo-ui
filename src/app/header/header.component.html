@@ -27,7 +27,7 @@
       <a
         class="nav-item nav-link link-body-emphasis"
         href="#"
-        *ngFor="let category of (categories$ | async)">
+        *ngFor="let category of (categories$ | async)?.value">
         {{ category }}
       </a>
     </nav>

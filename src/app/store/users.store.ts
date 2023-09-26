@@ -1,37 +1,28 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Observable, shareReplay } from 'rxjs';
 import { User } from '../models/user';
-import { BehaviorSubject, catchError, Observable, shareReplay, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { handleError } from '../shared/utils';
+import { HttpRequestState, HttpRequestStates } from './http-request-state';
 
 @Injectable({ providedIn: 'root' })
-export class UsersStore implements OnInit {
-
-  private usersSubject = new BehaviorSubject<User[]>([]);
-  users$ = this.usersSubject.asObservable();
+export class UsersStore {
 
   constructor(private http: HttpClient) {
   }
 
-  ngOnInit() {
-    this.loadAllUsers()
-      .subscribe();
-  }
-
-  loadAllUsers(): Observable<User[]> {
+  loadAllUsers(): Observable<HttpRequestState<User[]>> {
     return this.http.get<User[]>(`${environment.apiUrl}/users`)
       .pipe(
-        catchError(error => handleError(error, [])),
-        tap(users => this.usersSubject.next(users)),
+        HttpRequestStates(),
         shareReplay()
       );
   }
 
-  getUserById(userId: number): Observable<User> {
+  getUserById(userId: number): Observable<HttpRequestState<User>> {
     return this.http.get<User>(`${environment.apiUrl}/users/${userId}`)
       .pipe(
-        catchError(error => handleError<User>(error)),
+        HttpRequestStates(),
         shareReplay()
       );
   }

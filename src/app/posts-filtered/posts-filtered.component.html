@@ -1,1 +1,88 @@
-<p>posts-filtered works!</p>
+<ng-container *ngIf="postsData$ | async as data">
+  <div *ngIf="data.isLoading">LOADING</div>
+  <div *ngIf="data.error"><pre>{{ data.error }}</pre></div>
+  <div *ngIf="data.value"><pre>{{ data.value }}</pre></div>
+</ng-container>
+
+<!--
+<ng-container *ngIf="(loading$ | async); else loaded">
+  <div class="d-flex justify-content-center align-items-center" style="height: 75vh;">
+    <div class="spinner-border " role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #loaded>
+
+  <ng-container *ngIf="(postsData$ | async) as postsData; else noData">
+    <article class="blog-post" *ngFor="let data of postsData">
+      <div class="card rounded border-0 mb-2">
+        <div class="row g-0">
+          <div class="col-12 mb-3">
+            <span
+              class="badge rounded-pill text-bg-secondary me-2"
+              *ngFor="let category of data.post.categories">
+            {{ category }}
+          </span>
+          </div>
+          <div class="card-title">
+            <h1 class="fst-italic mb-0">{{ data.post.title }}</h1>
+          </div>
+          <a routerLink="/posts/{{ data.post.id }}" class="stretched-link"></a>
+          <div class="col-md-6 pt-md-3 order-md-last">
+            <img [src]="data.post.imageUrl | imagePath" class="card-img" alt="{{ data.post.imageUrl }}">
+          </div>
+          <div class="col-md-6">
+            <div class="card-body">
+              <p class="lead">{{ data.post.lede }}</p>
+              <p class="card-text mt-3"><small
+                class="text-body-secondary">published on {{ data.post.publishedDate | date:'longDate' }}
+                at {{ data.post.publishedDate | date:'shortTime' }}
+                by <a [href]="data.author.profileUrl">{{ data.author.firstName }} {{ data.author.lastName }}</a></small>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p
+        class="text-body-tertiary text-end"
+        *ngIf="data.post.imageUrlCredit">
+        <small>image credit: <span [innerHTML]="data.post.imageUrlCredit | safeHtml"></span></small>
+      </p>
+      <hr>
+    </article>
+  </ng-container>
+
+  <ng-template #noData>
+    <article class="blog-post">
+      <div class="card rounded border-0 mb-2">
+        <div class="row g-0">
+          <div class="col-12 mb-3">
+            <span class="badge rounded-pill text-bg-secondary me-2">Shoot</span>
+          </div>
+          <div class="card-title">
+            <h1 class="fst-italic mb-0">Oops! Missing Articles</h1>
+          </div>
+          <div class="col-md-6 pt-md-3 order-md-last">
+            <img [src]="'/images/sad_robot.png' | imagePath" class="card-img" alt="sad robot looking for a document">
+          </div>
+          <div class="col-md-6">
+            <div class="card-body">
+              <p class="lead">That query didn't seem to turn up any articles. Please
+                <a routerLink="/"
+                   title="link to home page">return to the home page</a>
+                and try picking another article.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="text-body-tertiary text-end">
+        <small>image credit: <span><a href="https://labs.openai.com/">DALL-E</a></span></small>
+      </p>
+    </article>
+  </ng-template>
+</ng-template>
+-->

@@ -1,57 +1,57 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Post } from '../models/post';
-import { BehaviorSubject, catchError, Observable, shareReplay, tap, throwError } from 'rxjs';
+import { HttpRequestState, HttpRequestStates } from './http-request-state';
+import { ArchiveLink } from '../models/archive-links';
+import { Observable, shareReplay } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { handleError } from '../shared/utils';
 
 @Injectable({ providedIn: 'root' })
-export class PostsStore implements OnInit {
-
-  private postsSubject = new BehaviorSubject<Post[]>([]);
-  posts$ = this.postsSubject.asObservable();
+export class PostsStore {
 
   constructor(private http: HttpClient) {
   }
 
-  ngOnInit() {
-    this.loadAllPosts()
-      .subscribe();
-  }
-
-  loadAllPosts(): Observable<Post[]> {
+  loadAllPosts(): Observable<HttpRequestState<Post[]>> {
     return this.http.get<Post[]>(`${environment.apiUrl}/posts`)
       .pipe(
-        catchError(error => handleError(error, [])),
-        tap(posts => this.postsSubject.next(posts)),
+        HttpRequestStates(),
         shareReplay()
       );
   }
 
-  loadFilteredPosts(query: any): Observable<Post[]> {
+  loadFilteredPosts(query: any): Observable<HttpRequestState<Post[]>> {
     const options = {
       params: new HttpParams({ fromObject: query })
     };
+
     return this.http.get<Post[]>(`${environment.apiUrl}/posts`, options)
       .pipe(
-        catchError(error => handleError(error, [])),
-        tap(posts => this.postsSubject.next(posts)),
+        HttpRequestStates(),
         shareReplay()
       );
   }
 
-  getPostById(postId: number): Observable<Post> {
+  getPostById(postId: number): Observable<HttpRequestState<Post>> {
     return this.http.get<Post>(`${environment.apiUrl}/posts/${postId}`)
       .pipe(
-        catchError(error => handleError<Post>(error)),
+        HttpRequestStates(),
         shareReplay()
       );
   }
 
-  getPostCategories(): Observable<string[]> {
+  getPostCategories(): Observable<HttpRequestState<string[]>> {
     return this.http.get<string[]>(`${environment.apiUrl}/posts/categories`)
       .pipe(
-        catchError(error => handleError(error, [])),
+        HttpRequestStates(),
+        shareReplay()
+      );
+  }
+
+  loadArchiveLinks(): Observable<HttpRequestState<ArchiveLink[]>> {
+    return this.http.get<ArchiveLink[]>(`${environment.apiUrl}/posts/archive-links`)
+      .pipe(
+        HttpRequestStates(),
         shareReplay()
       );
   }
