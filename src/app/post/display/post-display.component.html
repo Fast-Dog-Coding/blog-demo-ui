@@ -1,5 +1,5 @@
 <div *ngIf="postData">
-  <article class="blog-post">
+  <article class="blog-post border-bottom">
     <div class="card rounded border-0 mb-2">
       <div class="row g-0">
         <div class="col-12 mb-3">
@@ -12,10 +12,10 @@
         <div class="card-title">
           <h1 class="fst-italic mb-0">{{ postData.post.title }}</h1>
         </div>
-        <div class="col-md-6 pt-md-3 order-md-last">
+        <div class="col-md-5 pt-md-3 order-md-last">
           <img [src]="postData.post.imageUrl | imagePath" class="card-img" alt="{{ postData.post.imageUrl }}">
         </div>
-        <div class="col-md-6">
+        <div class="col-md-7">
           <div class="card-body">
             <p class="lead">{{ postData.post.lede }}</p>
             <p class="card-text mt-3"><small
@@ -28,7 +28,6 @@
       </div>
     </div>
 
-    <hr>
     <div [innerHTML]="postData.post.bodyHtml | safeHtml"></div>
     <p
       class="text-body-tertiary text-end"
