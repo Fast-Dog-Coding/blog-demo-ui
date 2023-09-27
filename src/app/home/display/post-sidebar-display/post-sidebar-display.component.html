@@ -1,1 +1,16 @@
-<p>post-sidebar-display works!</p>
+<a
+  class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top"
+  *ngIf="postData"
+  routerLink="/posts/{{ postData.post.id }}">
+  <img
+    [src]="postData.post.imageUrl | imagePath"
+    class="col-lg-4 object-fit-cover rounded"
+    style="height: 6rem"
+    alt="stock blog post image"
+    *ngIf="postData.post.imageUrl">
+
+  <div class="col-lg-8">
+    <h6 class="mb-0">{{ postData.post.title }}</h6>
+    <small class="text-body-secondary">{{ postData.post.publishedDate | date: 'longDate' }}</small>
+  </div>
+</a>

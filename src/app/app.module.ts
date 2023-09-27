@@ -14,13 +14,14 @@ import { PostComponent } from './post/logic/post.component';
 import { PostDisplayComponent } from './post/display/post-display.component';
 import { PostListComponent } from './home/post-list/post-list.component';
 import { SideBarComponent } from './home/side-bar/side-bar.component';
-import { PostsFilteredComponent } from './posts-filtered/posts-filtered.component';
+import { PostsFilteredComponent } from './posts-filtered/logic/posts-filtered.component';
 import { ImagePathPipe } from './shared/pipes/image-path.pipe';
 import { SafeHtmlPipe } from './shared/pipes/safe-html.pipe';
 import { PostLoadingComponent } from './shared/display/post-loading/post-loading.component';
 import { PostHeroDisplayComponent } from './home/display/post-hero-display/post-hero-display.component';
 import { PostFeatureDisplayComponent } from './home/display/post-feature-display/post-feature-display.component';
 import { PostSidebarDisplayComponent } from './home/display/post-sidebar-display/post-sidebar-display.component';
+import { PostFilteredDisplayComponent } from './posts-filtered/display/post-filtered-display/post-filtered-display.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { PostSidebarDisplayComponent } from './home/display/post-sidebar-display
     PostLoadingComponent,
     PostHeroDisplayComponent,
     PostFeatureDisplayComponent,
-    PostSidebarDisplayComponent
+    PostSidebarDisplayComponent,
+    PostFilteredDisplayComponent
   ],
   imports: [
     AppRoutingModule,

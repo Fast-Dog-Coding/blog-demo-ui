@@ -1,0 +1,23 @@
+<div
+  class="row"
+  *ngIf="filteredPostsRequestData$ | async as postsRequest">
+
+  <app-post-loading
+    class="col-12"
+    *ngIf="postsRequest.isLoading">
+  </app-post-loading>
+
+  <app-post-filtered-display
+    class="col-12"
+    *ngFor="let postData of postsRequest.value"
+    [postData]="postData">
+  </app-post-filtered-display>
+
+  <app-error
+    class="col-12"
+    *ngIf="postsRequest.error as error"
+    [error]="error"
+    [message]="'We couldn\'t find any of those articles.'">
+  </app-error>
+
+</div>

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { PostWithAuthor } from '../../../models/post-with-author';
 
 @Component({
   selector: 'app-post-sidebar-display',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./post-sidebar-display.component.css']
 })
 export class PostSidebarDisplayComponent {
+
+  @Input() postData: PostWithAuthor | undefined
 
 }

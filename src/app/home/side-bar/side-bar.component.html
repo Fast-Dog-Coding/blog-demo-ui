@@ -7,20 +7,9 @@
   <div>
     <h4 class="fst-italic">Recent posts</h4>
     <ul class="list-unstyled">
-      <li *ngFor="let data of (postData$ | async)?.value">
-        <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top" routerLink="/posts/{{ data.post.id }}">
-          <img
-            [src]="data.post.imageUrl | imagePath"
-            class="col-lg-4 object-fit-cover rounded"
-            style="height: 6rem"
-            alt="stock blog post image"
-            *ngIf="data.post.imageUrl">
-
-          <div class="col-lg-8">
-            <h6 class="mb-0">{{ data.post.title }}</h6>
-            <small class="text-body-secondary">{{ data.post.publishedDate | date: 'longDate' }}</small>
-          </div>
-        </a>
+      <li *ngFor="let sidebarPostData of (sidebarPostData$ | async)?.value">
+        <app-post-sidebar-display [postData]="sidebarPostData">
+        </app-post-sidebar-display>
       </li>
     </ul>
   </div>

@@ -1,16 +1,18 @@
-<ng-container *ngIf="postRequestData$ | async as postRequest">
-  <div *ngIf="postRequest.isLoading">
-    <app-post-loading></app-post-loading>
-  </div>
+<div *ngIf="postRequestData$ | async as postRequest">
 
-  <div *ngIf="postRequest.value as value">
-    <app-post-display [postData]="value"></app-post-display>
-  </div>
+  <app-post-loading
+    *ngIf="postRequest.isLoading">
+  </app-post-loading>
 
-  <div *ngIf="postRequest.error as error">
-    <app-error
-      [error]="error"
-      [message]="'We lost that article somewhere along the way.'">
-    </app-error>
-  </div>
-</ng-container>
+  <app-post-display
+    *ngIf="postRequest.value as value"
+    [postData]="value">
+  </app-post-display>
+
+  <app-error
+    *ngIf="postRequest.error as error"
+    [error]="error"
+    [message]="'We lost that article somewhere along the way.'">
+  </app-error>
+
+</div>

@@ -16,7 +16,7 @@ import { HttpRequestState } from '../../store/http-request-state';
 export class SideBarComponent implements OnInit {
 
   archiveLinkData$: Observable<HttpRequestState<ArchiveLink[]>> = of({ isLoading: true });
-  postData$: Observable<HttpRequestState<PostWithAuthor[]>> = of({ isLoading: true});
+  sidebarPostData$: Observable<HttpRequestState<PostWithAuthor[]>> = of({ isLoading: true});
 
   constructor(
     private postsStore: PostsStore,
@@ -26,7 +26,7 @@ export class SideBarComponent implements OnInit {
 
   ngOnInit(): void {
     // Get 3 posts (with author info) to show on main section of home page
-    this.postData$ = this.postsStore.loadFilteredPosts({ promotion: PromotionLevels.Side_Bar })
+    this.sidebarPostData$ = this.postsStore.loadFilteredPosts({ promotion: PromotionLevels.Side_Bar })
       .pipe(processPosts(this.usersStore, 3));
 
     // Get the archive links
