@@ -26,7 +26,8 @@
     <nav class="nav nav-underline justify-content-between">
       <a
         class="nav-item nav-link link-body-emphasis"
-        href="#"
+        [routerLink]="'posts/filtered'"
+        [queryParams]="{ category: category }"
         *ngFor="let category of (categories$ | async)?.value">
         {{ category }}
       </a>
