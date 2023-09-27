@@ -1,1 +1,21 @@
-<p>post-feature-display works!</p>
+<div class="row g-0" *ngIf="featurePostData">
+  <div class="col-md-6">
+    <div class="card-body">
+          <span
+            class="badge rounded-pill text-bg-secondary mb-2 me-2"
+            *ngFor="let category of featurePostData.post.categories">
+            {{ category }}
+          </span>
+      <h3 class="fst-italic">{{ featurePostData.post.title }}</h3>
+      <a routerLink="/posts/{{ featurePostData.post.id }}"
+         class="icon-link icon-link-hover stretched-link align-items-baseline text-primary">
+        Continue reading <i class="bi bi-chevron-right"></i>
+      </a>
+      <p class="card-text mt-3"><small
+        class="text-body-secondary">{{ featurePostData.post.publishedDate | date:'longDate' }}</small></p>
+    </div>
+  </div>
+  <div class="col-md-6 order-first order-md-last">
+    <img [src]="featurePostData.post.imageUrl | imagePath" class="card-img" alt="{{ featurePostData.post.imageUrl }}">
+  </div>
+</div>

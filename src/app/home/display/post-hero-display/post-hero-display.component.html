@@ -1,1 +1,15 @@
-<p>post-hero-display works!</p>
+<div class="card rounded mb-2" *ngIf="heroPostData as postData">
+  <img [src]="postData.post.imageUrl | imagePath" class="card-img" alt="{{ postData.post.imageUrl }}">
+  <div class="card-img-overlay bg-linear-gradient text-overlay">
+    <div class="col-sm-8 col-lg-6">
+      <h1 class="display-4 fst-italic">{{ postData.post.title }}</h1>
+      <p class="card-text lead my-3 d-none d-sm-block"><strong>{{ postData.post.lede }}</strong></p>
+      <a routerLink="/posts/{{ postData.post.id }}"
+         class="icon-link icon-link-hover stretched-link align-items-baseline text-primary">
+        Continue reading <i class="bi bi-chevron-right"></i>
+      </a>
+      <p class="card-text mt-3"><small>{{ postData.post.publishedDate | date:'longDate' }}
+        by {{ postData.author.firstName }} {{ postData.author.lastName }}</small></p>
+    </div>
+  </div>
+</div>

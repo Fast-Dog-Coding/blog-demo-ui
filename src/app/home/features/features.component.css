@@ -1,7 +1,3 @@
-.bg-linear-gradient {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 1.0), transparent);
-}
-
-.text-overlay {
-  text-shadow: 2px 2px 4px rgba(255, 255, 255, 1.0);
+app-post-feature-display {
+  flex: 1 1 0;
 }
