@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Post } from '../models/post';
 import { HttpRequestState, HttpRequestStates } from './http-request-state';
-import { ArchiveLink } from '../models/archive-links';
+import { ArchiveLink } from '../models/archive-link';
 import { Observable, shareReplay } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@environments/environment';

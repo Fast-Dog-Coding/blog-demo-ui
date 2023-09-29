@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -21,7 +21,11 @@ import { PostLoadingComponent } from './shared/display/post-loading/post-loading
 import { PostHeroDisplayComponent } from './home/display/post-hero-display/post-hero-display.component';
 import { PostFeatureDisplayComponent } from './home/display/post-feature-display/post-feature-display.component';
 import { PostSidebarDisplayComponent } from './home/display/post-sidebar-display/post-sidebar-display.component';
-import { PostFilteredDisplayComponent } from './posts-filtered/display/post-filtered-display/post-filtered-display.component';
+import {
+  PostFilteredDisplayComponent
+} from './posts-filtered/display/post-filtered-display/post-filtered-display.component';
+import { BreadCrumbsComponent } from './shared/display/bread-crumbs/bread-crumbs.component';
+import { PreviousRouteService } from './services/previous-route.service';
 
 @NgModule({
   declarations: [
@@ -42,7 +46,8 @@ import { PostFilteredDisplayComponent } from './posts-filtered/display/post-filt
     PostHeroDisplayComponent,
     PostFeatureDisplayComponent,
     PostSidebarDisplayComponent,
-    PostFilteredDisplayComponent
+    PostFilteredDisplayComponent,
+    BreadCrumbsComponent
   ],
   imports: [
     AppRoutingModule,
@@ -50,7 +55,15 @@ import { PostFilteredDisplayComponent } from './posts-filtered/display/post-filt
     HttpClientModule,
     NgbModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    PreviousRouteService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (previousRouteService: PreviousRouteService) => () => previousRouteService.initialize(),
+      deps: [ PreviousRouteService ],
+      multi: true
+    }
+  ],
+  bootstrap: [ AppComponent ]
 })
-export class AppModule { }
+export class AppModule {}

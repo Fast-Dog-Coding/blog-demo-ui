@@ -7,6 +7,11 @@
     *ngIf="postsRequest.isLoading">
   </app-post-loading>
 
+  <app-bread-crumbs
+    *ngIf="(breadcrumbs$ | async) as breadcrumbs"
+    [breadcrumbs]="breadcrumbs">
+  </app-bread-crumbs>
+
   <app-post-filtered-display
     class="col-12"
     *ngFor="let postData of postsRequest.value"
