@@ -12,10 +12,10 @@
         <h1 class="fst-italic mb-0">{{ postData.post.title }}</h1>
       </div>
       <a routerLink="/posts/{{ postData.post.id }}" class="stretched-link"></a>
-      <div class="col-md-6 pt-md-3 order-md-last">
+      <div class="col-md-4 pt-md-3 order-md-last">
         <img [src]="postData.post.imageUrl | imagePath" class="card-img" alt="{{ postData.post.imageUrl }}">
       </div>
-      <div class="col-md-6">
+      <div class="col-md-8">
         <div class="card-body">
           <p class="lead">{{ postData.post.lede }}</p>
           <p class="card-text mt-3"><small

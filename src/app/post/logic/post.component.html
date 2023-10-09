@@ -1,13 +1,13 @@
 <div *ngIf="postRequestData$ | async as postRequest">
 
-  <app-post-loading
-    *ngIf="postRequest.isLoading">
-  </app-post-loading>
-
   <app-bread-crumbs
     *ngIf="(breadcrumbs$ | async) as breadcrumbs"
     [breadcrumbs]="breadcrumbs">
   </app-bread-crumbs>
+
+  <app-post-loading
+    *ngIf="postRequest.isLoading">
+  </app-post-loading>
 
   <app-post-display
     *ngIf="postRequest.value as value"

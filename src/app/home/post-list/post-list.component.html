@@ -1,8 +1,16 @@
-<h3 class="pb-4 mb-4 fst-italic border-bottom">
-  From the Data Stream
-</h3>
+<div *ngIf="postRequestData$ | async as postRequest">
 
-<app-post-display
-  *ngFor="let postData of (postRequestData$ | async)?.value"
-  [postData]="postData">
-</app-post-display>
+  <h3 class="pb-4 mb-4 fst-italic border-bottom">
+    From the Data Stream
+  </h3>
+
+  <app-post-display
+    *ngFor="let postData of postRequest.value"
+    [postData]="postData">
+  </app-post-display>
+
+  <div *ngIf="postRequest.error">
+    <p class="text-muted small">{{ errorMessage }}</p>
+  </div>
+
+</div>

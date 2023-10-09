@@ -2,15 +2,15 @@
   class="row"
   *ngIf="filteredPostsRequestData$ | async as postsRequest">
 
-  <app-post-loading
-    class="col-12"
-    *ngIf="postsRequest.isLoading">
-  </app-post-loading>
-
   <app-bread-crumbs
     *ngIf="(breadcrumbs$ | async) as breadcrumbs"
     [breadcrumbs]="breadcrumbs">
   </app-bread-crumbs>
+
+  <app-post-loading
+    class="col-12"
+    *ngIf="postsRequest.isLoading">
+  </app-post-loading>
 
   <app-post-filtered-display
     class="col-12"
