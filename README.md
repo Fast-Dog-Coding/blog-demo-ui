@@ -10,7 +10,7 @@ This application was developed by [Grant Lindsay](https://linkedin.com/in/grant-
 
 ## Is there a live version that I can see?
 
-The live version is a work n progress, but feel free to take a look at [https://fastdogcoding.com/demo/](https://fastdogcoding.com/demo/).
+The live version is a work in progress, but feel free to take a look at [https://fastdogcoding.com/demo/](https://fastdogcoding.com/demo/).
 
 ## Can I copy this application for myself?
 
