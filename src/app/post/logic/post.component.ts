@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { PostsStore } from '../../store/posts.store';
-import { UsersStore } from '../../store/users.store';
+import { PostService } from '../../services/post.service';
+import { UserService } from '../../services/user.service';
 import { PostWithAuthor } from '../../models/post-with-author';
 import { processPost } from '../../shared/utils';
-import { HttpRequestState } from '../../store/http-request-state';
+import { HttpRequestState } from '../../models/http-request-state';
 import { BreadCrumb } from '../../models/bread-crumb';
 import { PreviousRouteService } from '../../services/previous-route.service';
 
@@ -24,8 +24,8 @@ export class PostComponent implements OnInit {
   constructor(
     private router: ActivatedRoute,
     private previousRoute: PreviousRouteService,
-    private postsStore: PostsStore,
-    private usersStore: UsersStore
+    private postsStore: PostService,
+    private usersStore: UserService
   ) {
   }
 

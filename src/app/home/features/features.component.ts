@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, of, switchMap } from 'rxjs';
-import { PostsStore } from '../../store/posts.store';
-import { UsersStore } from '../../store/users.store';
+import { PostService } from '../../services/post.service';
+import { UserService } from '../../services/user.service';
 import { PromotionLevels } from '../../models/post';
 import { PostWithAuthor } from '../../models/post-with-author';
 import { processPost, processPosts } from '../../shared/utils';
-import { HttpRequestState } from '../../store/http-request-state';
+import { HttpRequestState } from '../../models/http-request-state';
 
 @Component({
   selector: 'app-features',
@@ -18,23 +18,23 @@ export class FeaturesComponent implements OnInit {
   featurePostsRequestData$: Observable<HttpRequestState<PostWithAuthor[]>> = of({ isLoading: true });
 
   constructor(
-    private postsStore: PostsStore,
-    private usersStore: UsersStore
+    private postService: PostService,
+    private userService: UserService
   ) {
   }
 
   ngOnInit(): void {
     // Get 1 hero post (with author info) to show in the feature section of home page
-    this.heroPostRequestData$ = this.postsStore.loadFilteredPosts({ promotion: PromotionLevels.Hero })
+    this.heroPostRequestData$ = this.postService.loadFilteredPosts({ promotion: PromotionLevels.Hero })
       .pipe(
         switchMap(postsRequest => {
           return of({ ...postsRequest, value: postsRequest.value?.pop() });
         }),
-        processPost(this.usersStore)
+        processPost(this.userService)
       );
 
     // Get 2 feature posts (with author info) to show in the feature section of home page
-    this.featurePostsRequestData$ = this.postsStore.loadFilteredPosts({ promotion: PromotionLevels.Feature })
-      .pipe(processPosts(this.usersStore, 2));
+    this.featurePostsRequestData$ = this.postService.loadFilteredPosts({ promotion: PromotionLevels.Feature })
+      .pipe(processPosts(this.userService, 2));
   }
 }

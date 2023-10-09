@@ -3,8 +3,8 @@ import { map, switchMap } from 'rxjs/operators';
 import { Post } from '../../models/post';
 import { User } from '../../models/user';
 import { PostWithAuthor } from '../../models/post-with-author';
-import { UsersStore } from '../../store/users.store';
-import { HttpRequestState } from '../../store/http-request-state';
+import { UserService } from '../../services/user.service';
+import { HttpRequestState } from '../../models/http-request-state';
 
 /**
  * Combines an array of posts with an array of user results to create an array of posts with their respective authors.
@@ -35,11 +35,11 @@ function formatResponse<T, K>(requestState: HttpRequestState<T>, newValue?: K): 
 /**
  * Retrieves the authors of the given posts from the users store.
  *
- * @param {UsersStore} usersStore - The store containing the user data.
+ * @param {UserService} usersStore - The store containing the user data.
  * @param {Post[]} posts - The posts to retrieve the authors for.
  * @return {Observable<HttpRequestState<User>[]>} - An observable that emits an array of HTTP request states for each author retrieval.
  */
-function getAuthorsForPosts(usersStore: UsersStore, posts: Post[]): Observable<HttpRequestState<User>[]> {
+function getAuthorsForPosts(usersStore: UserService, posts: Post[]): Observable<HttpRequestState<User>[]> {
   const getUserCalls = posts.map(post => usersStore.getUserById(post.authorId));
   return forkJoin(getUserCalls);
 }
@@ -70,7 +70,7 @@ function getPostsSortedByDate(posts: Post[] | undefined, numberToReturn?: number
  * @param numberToReturn - Optional. The maximum number of posts to return. If not specified, all posts will be returned.
  * @returns An operator function that takes an `HttpRequestState<Post[]>` as input and emits an `HttpRequestState<PostWithAuthor[]>` with the processed posts.
  */
-export function processPosts(usersStore: UsersStore, numberToReturn?: number): OperatorFunction<HttpRequestState<Post[]>, HttpRequestState<PostWithAuthor[]>> {
+export function processPosts(usersStore: UserService, numberToReturn?: number): OperatorFunction<HttpRequestState<Post[]>, HttpRequestState<PostWithAuthor[]>> {
   return (requestState$) => requestState$
     .pipe(
       switchMap(postsRequestState => {
@@ -92,10 +92,10 @@ export function processPosts(usersStore: UsersStore, numberToReturn?: number): O
 /**
  * Processes a post by retrieving the post author's information and updating the response value.
  *
- * @param {UsersStore} usersStore - The UsersStore instance used to retrieve user information.
+ * @param {UserService} usersStore - The UserService instance used to retrieve user information.
  * @return {OperatorFunction<HttpRequestState<Post>, HttpRequestState<PostWithAuthor>>} - The operator function that processes the post.
  */
-export function processPost(usersStore: UsersStore): OperatorFunction<HttpRequestState<Post>, HttpRequestState<PostWithAuthor>> {
+export function processPost(usersStore: UserService): OperatorFunction<HttpRequestState<Post>, HttpRequestState<PostWithAuthor>> {
   return requestState$ => requestState$
     .pipe(
       switchMap((postRequestState: HttpRequestState<Post>) => {
@@ -122,16 +122,4 @@ export function processPost(usersStore: UsersStore): OperatorFunction<HttpReques
       }),
       catchError((error) => of(formatResponse<Post, PostWithAuthor>({ isLoading: false, error })))
     );
-}
-
-/**
- * Handles an error and returns an Observable with a default value: post.
- *
- * @param {any} error - The error object to be logged.
- * @param {any} [defaultValue=null] - The default value: post returned in the Observable.
- * @returns {Observable<any>} An Observable with the default value: post.
- */
-export function handleError<T>(error: any, defaultValue: T = null as T): Observable<T> {
-  console.error(error);
-  return of(defaultValue);
 }

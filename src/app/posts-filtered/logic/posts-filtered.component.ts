@@ -3,10 +3,10 @@ import { Observable, of, Subject } from 'rxjs';
 import { map, takeUntil, switchMap } from 'rxjs/operators';
 import { BreadCrumb } from '../../models/bread-crumb';
 import { ActivatedRoute, Params } from '@angular/router';
-import { HttpRequestState } from '../../store/http-request-state';
+import { HttpRequestState } from '../../models/http-request-state';
 import { PostWithAuthor } from '../../models/post-with-author';
-import { PostsStore } from '../../store/posts.store';
-import { UsersStore } from '../../store/users.store';
+import { PostService } from '../../services/post.service';
+import { UserService } from '../../services/user.service';
 import { processPosts } from '../../shared/utils';
 
 /**
@@ -26,16 +26,16 @@ export class PostsFilteredComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private postsStore: PostsStore,
-    private usersStore: UsersStore
+    private postService: PostService,
+    private userService: UserService
   ) {
   }
 
   ngOnInit(): void {
 
     this.filteredPostsRequestData$ = this.route.queryParams.pipe(
-      switchMap(query => this.postsStore.loadFilteredPosts(query)),
-      processPosts(this.usersStore),
+      switchMap(query => this.postService.loadFilteredPosts(query)),
+      processPosts(this.userService),
       takeUntil(this.destroy$)
     );
 

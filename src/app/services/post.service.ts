@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Post } from '../models/post';
-import { HttpRequestState, HttpRequestStates } from './http-request-state';
+import { HttpRequestState, HttpRequestStates } from '../models/http-request-state';
 import { ArchiveLink } from '../models/archive-link';
 import { Observable, shareReplay } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@environments/environment';
 
 @Injectable({ providedIn: 'root' })
-export class PostsStore {
+export class PostService {
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   loadAllPosts(): Observable<HttpRequestState<Post[]>> {
     return this.http.get<Post[]>(`${environment.apiUrl}/posts`)

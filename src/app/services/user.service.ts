@@ -3,13 +3,12 @@ import { Observable, shareReplay } from 'rxjs';
 import { User } from '../models/user';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { HttpRequestState, HttpRequestStates } from './http-request-state';
+import { HttpRequestState, HttpRequestStates } from '../models/http-request-state';
 
 @Injectable({ providedIn: 'root' })
-export class UsersStore {
+export class UserService {
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   loadAllUsers(): Observable<HttpRequestState<User[]>> {
     return this.http.get<User[]>(`${environment.apiUrl}/users`)
