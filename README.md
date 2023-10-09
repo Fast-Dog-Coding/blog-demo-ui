@@ -10,15 +10,15 @@ This application was developed by [Grant Lindsay](https://linkedin.com/in/grant-
 
 ## Is there a live version that I can see?
 
-Coming soon.
+The live versin s a work n progress, but feel free to take a look at [https://fastdogcoding.com/demo/](https://fastdogcoding.com/demo/)
 
 ## Can I copy this application for myself?
 
 If you comply with the terms in the LICENSE, of course you may.
 
-Reasons that someone may want to do that include, learning from someone else's work, evaluating the skills of the programmer, or similar purposes.
+Reasons that someone may want to do that include learning from someone else's work, evaluating the skills of the programmer, or similar purposes.
 
-It should go without saying that passing this source code off as one's own work would be wrong.
+It should go without saying that passing off this source code as one's own work would be wrong.
 
 ## Working with the Source Code
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0.
