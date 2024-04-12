@@ -6,6 +6,6 @@
 export const environment = {
   production: false,
 	appName: 'blog-demo',
-  // apiUrl: 'http://localhost:3200'
-  apiUrl: 'https://demo-blog-api.fastdogcoding.com'
+  apiUrl: 'http://localhost:3200'
+  // apiUrl: 'https://9v4b8y8uhy.us-east-1.awsapprunner.com'
 };

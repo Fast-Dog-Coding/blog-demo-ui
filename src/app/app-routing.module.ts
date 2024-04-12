@@ -18,24 +18,31 @@ const routes: Routes = [
     path: 'posts/:postId',
     component: PostComponent
   },
-/*
-  {
-    path: 'pages/:pageId',
-    component: PageComponent
-  },
-  {
-    path: 'login',
-    component: LoginComponent
-  },
-*/
+  /*
+    {
+      path: 'pages/:pageId',
+      component: PageComponent
+    },
+    {
+      path: 'login',
+      component: LoginComponent
+    },
+  */
   {
     path: '**',
     redirectTo: '/'
   }
-  ];
+];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: "top" })],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(
+      routes,
+      { scrollPositionRestoration: 'top', useHash: true }
+    )
+  ],
+  exports: [ RouterModule ]
 })
-export class AppRoutingModule { }
+
+export class AppRoutingModule {
+}

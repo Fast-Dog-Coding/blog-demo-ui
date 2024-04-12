@@ -4,7 +4,7 @@ import { catchError, map, Observable, of, startWith } from 'rxjs';
 export interface HttpRequestState<T> {
   readonly isLoading: boolean;
   readonly value?: T;
-  readonly error?: HttpErrorResponse | Error;
+  readonly error?: HttpErrorResponse | Error | undefined;
 }
 
 export interface LoadingState<T> extends HttpRequestState<T> {

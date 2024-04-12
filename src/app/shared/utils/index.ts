@@ -40,7 +40,7 @@ function formatResponse<T, K>(requestState: HttpRequestState<T>, newValue?: K): 
  * @return {Observable<HttpRequestState<User>[]>} - An observable that emits an array of HTTP request states for each author retrieval.
  */
 function getAuthorsForPosts(usersStore: UserService, posts: Post[]): Observable<HttpRequestState<User>[]> {
-  const getUserCalls = posts.map(post => usersStore.getUserById(post.authorId));
+  const getUserCalls: Observable<HttpRequestState<User>>[] = posts.map(post => usersStore.getUserById(post.authorId));
   return forkJoin(getUserCalls);
 }
 
